@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Resume Builder Insert Tool",
+  "version": "2026.06.18",
+  "description": "Fill Resume Builder form from clipboard JSON and send data to Google Sheet.",
+  "permissions": [
+    "clipboardRead",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://resume.softloom.tech/*",
+    "https://script.google.com/*",
+    "https://script.googleusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Resume Builder Tool",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://resume.softloom.tech/generate"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Resume Builder Tool</title>
+    <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+    <div class="popup">
+        <div class="header">
+            <div>
+                <h1>Resume Builder</h1>
+                <p>Settings / messages</p>
+            </div>
+        </div>
+
+        <div class="setting-box">
+            <label for="scriptUrlInput">Google Apps Script URL</label>
+            <input
+                id="scriptUrlInput"
+                type="url"
+                placeholder="https://script.google.com/macros/s/xxx/exec"
+            />
+            <button id="saveScriptUrlButton">Save URL</button>
+        </div>
+
+        <textarea id="logArea" readonly placeholder="Messages will appear here..."></textarea>
+
+        <div class="actions">
+            <button id="clearButton">Clear</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
