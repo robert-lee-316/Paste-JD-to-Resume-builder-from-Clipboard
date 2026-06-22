@@ -204,10 +204,10 @@
 
             log("Tech Stack labels: " + (data.labelsText || "None"));
 
-            // const response = await chrome.runtime.sendMessage({
-            //     type: "SEND_TO_SHEET",
-            //     payload: data
-            // });
+            const response = await chrome.runtime.sendMessage({
+                type: "SEND_TO_SHEET",
+                payload: data
+            });
 
             if (!response || !response.success) {
                 const message = response?.message || "Failed to send data.";
