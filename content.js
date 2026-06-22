@@ -11,7 +11,6 @@
             await runResumeBuilderTool();
         }
     });
-
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (!message || !message.type) return;
 
@@ -27,6 +26,26 @@
                         message: error.message
                     });
                 });
+
+            return true;
+        }
+
+        if (message.type === "APPLY_TEMPLATE_SETTINGS") {
+            try {
+                selectContentType(message.contentType || "Custom-260226");
+                selectVisualTemplate(message.visualTemplate || "Modern 2");
+
+                sendResponse({
+                    success: true
+                });
+            } catch (error) {
+                log("Apply template settings error: " + error.message);
+
+                sendResponse({
+                    success: false,
+                    message: error.message
+                });
+            }
 
             return true;
         }
@@ -185,10 +204,10 @@
 
             log("Tech Stack labels: " + (data.labelsText || "None"));
 
-            const response = await chrome.runtime.sendMessage({
-                type: "SEND_TO_SHEET",
-                payload: data
-            });
+            // const response = await chrome.runtime.sendMessage({
+            //     type: "SEND_TO_SHEET",
+            //     payload: data
+            // });
 
             if (!response || !response.success) {
                 const message = response?.message || "Failed to send data.";
@@ -219,15 +238,15 @@
             "contentType",
             "visualTemplate"
         ]);
-
+        console.log("1", result);
         return {
-            contentType: result.contentType || "Custom-260226",
-            visualTemplate: result.visualTemplate || "Modern 2"
+            contentType: result.contentType,
+            visualTemplate: result.visualTemplate
         };
     }
 
     function selectContentType(contentType) {
-        const targetText = contentType || "Custom-260226";
+        const targetText = contentType;
 
         const radioButtons = [
             ...document.querySelectorAll('button[role="radio"][id^="content-type-"]')
@@ -263,7 +282,7 @@
     }
 
     function selectVisualTemplate(visualTemplate) {
-        const targetText = visualTemplate || "Modern 2";
+        const targetText = visualTemplate
 
         const buttons = [...document.querySelectorAll('button[type="button"]')];
 

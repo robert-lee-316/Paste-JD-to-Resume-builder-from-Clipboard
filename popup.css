@@ -6,8 +6,6 @@ html,
 body {
     margin: 0;
     width: 380px;
-    /* height: 560px; */
-    /* overflow: hidden; */
     font-family: Arial, sans-serif;
     background: #f8fafc;
     color: #0f172a;
@@ -88,7 +86,7 @@ p {
 #saveAllSettingsButton {
     width: 100%;
     height: 35px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border: none;
     border-radius: 9px;
     background: linear-gradient(135deg, #2563eb, #7c3aed);
@@ -98,9 +96,33 @@ p {
     cursor: pointer;
 }
 
+.save-result {
+    display: none;
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.save-result.success {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+.save-result.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
 #logArea {
     width: 100%;
-    height: 185px;
+    height: 165px;
     resize: none;
     overflow: hidden;
     border: 1px solid #cbd5e1;
