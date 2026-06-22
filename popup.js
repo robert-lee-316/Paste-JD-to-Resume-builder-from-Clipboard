@@ -1,43 +1,59 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const logArea = document.getElementById("logArea");
     const clearButton = document.getElementById("clearButton");
-    const scriptUrlInput = document.getElementById("scriptUrlInput");
-    const saveScriptUrlButton = document.getElementById("saveScriptUrlButton");
 
-    await loadScriptUrl();
+    const scriptUrlInput = document.getElementById("scriptUrlInput");
+    const contentTypeSelect = document.getElementById("contentTypeSelect");
+    const visualTemplateSelect = document.getElementById("visualTemplateSelect");
+    const saveAllSettingsButton = document.getElementById("saveAllSettingsButton");
+
+    await loadSettings();
     await loadLogs();
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === "local" && changes.logs) {
+        if (areaName !== "local") return;
+
+        if (changes.logs) {
             renderLogs(changes.logs.newValue || []);
         }
 
-        if (areaName === "local" && changes.scriptUrl) {
+        if (changes.scriptUrl) {
             scriptUrlInput.value = changes.scriptUrl.newValue || "";
+        }
+
+        if (changes.contentType) {
+            contentTypeSelect.value = changes.contentType.newValue || "Custom-260226";
+        }
+
+        if (changes.visualTemplate) {
+            visualTemplateSelect.value = changes.visualTemplate.newValue || "Modern 2";
         }
     });
 
-    saveScriptUrlButton.addEventListener("click", async () => {
-        const url = scriptUrlInput.value.trim();
+    saveAllSettingsButton.addEventListener("click", async () => {
+        const scriptUrl = scriptUrlInput.value.trim();
+        const contentType = contentTypeSelect.value;
+        const visualTemplate = visualTemplateSelect.value;
 
-        chrome.runtime.sendMessage(
-            {
-                type: "SAVE_SCRIPT_URL",
-                url
-            },
-            response => {
-                if (chrome.runtime.lastError) {
-                    appendLocalMessage("Failed to save URL.");
-                    return;
-                }
+        if (!scriptUrl) {
+            appendLocalMessage("Google Apps Script URL cannot be empty.");
+            return;
+        }
 
-                if (response && response.success) {
-                    appendLocalMessage("Google Apps Script URL saved.");
-                } else {
-                    appendLocalMessage(response?.message || "Failed to save URL.");
-                }
-            }
-        );
+        if (!scriptUrl.startsWith("https://script.google.com/macros/s/")) {
+            appendLocalMessage("Invalid Google Apps Script URL.");
+            return;
+        }
+
+        await chrome.storage.local.set({
+            scriptUrl,
+            contentType,
+            visualTemplate
+        });
+
+        appendLocalMessage("Settings saved successfully.");
+        appendLocalMessage(`Content Type: ${contentType}`);
+        appendLocalMessage(`Visual Template: ${visualTemplate}`);
     });
 
     clearButton.addEventListener("click", async () => {
@@ -48,22 +64,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         logArea.value = "";
     });
 
-    async function loadScriptUrl() {
-        chrome.runtime.sendMessage(
-            {
-                type: "GET_SCRIPT_URL"
-            },
-            response => {
-                if (chrome.runtime.lastError) {
-                    appendLocalMessage("Failed to load Script URL.");
-                    return;
-                }
+    async function loadSettings() {
+        const result = await chrome.storage.local.get([
+            "scriptUrl",
+            "contentType",
+            "visualTemplate"
+        ]);
 
-                if (response && response.success) {
-                    scriptUrlInput.value = response.url || "";
-                }
-            }
-        );
+        scriptUrlInput.value = result.scriptUrl || "";
+        contentTypeSelect.value = result.contentType || "Custom-260226";
+        visualTemplateSelect.value = result.visualTemplate || "Modern 2";
     }
 
     async function loadLogs() {

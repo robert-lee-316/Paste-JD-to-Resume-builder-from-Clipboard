@@ -21,10 +21,52 @@
                 type="url"
                 placeholder="https://script.google.com/macros/s/xxx/exec"
             />
-            <button id="saveScriptUrlButton">Save URL</button>
         </div>
 
-        <textarea id="logArea" readonly placeholder="Messages will appear here..."></textarea>
+        <div class="settings-row">
+            <div class="setting-box half">
+                <label for="contentTypeSelect">Content Type</label>
+                <select id="contentTypeSelect">
+                    <option value="Legacy Content">Legacy Content</option>
+                    <option value="Targeted Content">Targeted Content</option>
+                    <option value="Custom-260226">Custom-260226</option>
+                </select>
+            </div>
+
+            <div class="setting-box half">
+                <label for="visualTemplateSelect">Visual Template</label>
+                <select id="visualTemplateSelect">
+                    <option value="Classic">Classic</option>
+                    <option value="Modern">Modern</option>
+                    <option value="Compact">Compact</option>
+                    <option value="Modern 2">Modern 2</option>
+                    <option value="Navy Serif">Navy Serif</option>
+                    <option value="Slate Minimal">Slate Minimal</option>
+                    <option value="Forest Clean">Forest Clean</option>
+                    <option value="Charcoal Classic">Charcoal Classic</option>
+                    <option value="Cream Professional">Cream Professional</option>
+                    <option value="Teal Modern">Teal Modern</option>
+                    <option value="Burgundy Elegant">Burgundy Elegant</option>
+                    <option value="Indigo Tech">Indigo Tech</option>
+                    <option value="Sky Light">Sky Light</option>
+                    <option value="Mono Courier">Mono Courier</option>
+                    <option value="Olive Serif">Olive Serif</option>
+                    <option value="Midnight Center">Midnight Center</option>
+                    <option value="Rose Soft">Rose Soft</option>
+                    <option value="Amber Warm">Amber Warm</option>
+                    <option value="Graphite Compact">Graphite Compact</option>
+                    <option value="Plum Serif">Plum Serif</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="saveAllSettingsButton">Save Settings</button>
+
+        <textarea
+            id="logArea"
+            readonly
+            placeholder="Messages will appear here..."
+        ></textarea>
 
         <div class="actions">
             <button id="clearButton">Clear</button>
